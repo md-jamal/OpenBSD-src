@@ -541,8 +541,8 @@ kunmap(void *addr)
 	pmap_unmap_direct(va);
 #else
 	pmap_kremove(va, PAGE_SIZE);
-	uvm_km_free(kernel_map, va, PAGE_SIZE);
 	pmap_update(pmap_kernel());
+	uvm_km_free(kernel_map, va, PAGE_SIZE);
 #endif
 }
 
@@ -554,11 +554,13 @@ vmap(struct vm_page **pages, unsigned int npages, unsigned long flags,
 	paddr_t pa;
 	int i;
 
-	va = uvm_km_alloc(kernel_map, PAGE_SIZE * npages);
+	va = uvm_km_valloc(kernel_map, PAGE_SIZE * npages);
+	if (va == 0)
+		return NULL;
 	for (i = 0; i < npages; i++) {
 		pa = VM_PAGE_TO_PHYS(pages[i]) | prot;
 		pmap_enter(pmap_kernel(), va + (i * PAGE_SIZE), pa,
-		    prot | VM_PROT_READ | VM_PROT_WRITE,
+		    VM_PROT_READ | VM_PROT_WRITE,
 		    VM_PROT_READ | VM_PROT_WRITE | PMAP_WIRED);
 		pmap_update(pmap_kernel());
 	}
@@ -572,8 +574,8 @@ vunmap(void *addr, size_t size)
 	vaddr_t va = (vaddr_t)addr;
 
 	pmap_remove(pmap_kernel(), va, va + size);
-	uvm_km_free(kernel_map, va, size);
 	pmap_update(pmap_kernel());
+	uvm_km_free(kernel_map, va, size);
 }
 
 static int ttm_bo_kmap_ttm(struct ttm_buffer_object *bo,
