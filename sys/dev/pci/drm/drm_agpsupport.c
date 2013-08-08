@@ -370,6 +370,7 @@ drm_agp_init(void)
 		head->agpdev = agpdev;
 		agp_get_info(agpdev, &head->info);
 		head->base = head->info.ai_aperture_base;
+		head->cant_use_aperture = (head->base == 0);
 		TAILQ_INIT(&head->memory);
 	}
 	return (head);

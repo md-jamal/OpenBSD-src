@@ -251,9 +251,11 @@ int radeon_agp_init(struct radeon_device *rdev)
 	dev_info(rdev->dev, "GTT: %lluM 0x%08llX - 0x%08llX\n",
 		rdev->mc.gtt_size >> 20, rdev->mc.gtt_start, rdev->mc.gtt_end);
 
-	start = atop(bus_space_mmap(rdev->memt, rdev->mc.gtt_start, 0, 0, 0));
-	end = start + atop(rdev->mc.gtt_size);
-	uvm_page_physload(start, end, start, end, PHYSLOAD_DEVICE);
+	if (!rdev->ddev->agp->cant_use_aperture) {
+		start = atop(bus_space_mmap(rdev->memt, rdev->mc.gtt_start, 0, 0, 0));
+		end = start + atop(rdev->mc.gtt_size);
+		uvm_page_physload(start, end, start, end, PHYSLOAD_DEVICE);
+	}
 
 	/* workaround some hw issues */
 	if (rdev->family < CHIP_R200) {
