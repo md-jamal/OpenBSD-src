@@ -39,7 +39,8 @@
 
 struct ttm_agp_backend {
 	struct ttm_tt ttm;
-	bus_addr_t bound;
+	int bound;
+	bus_addr_t addr;
 	struct drm_agp_head *agp;
 };
 
@@ -69,8 +70,8 @@ ttm_agp_bind(struct ttm_tt *ttm, struct ttm_mem_reg *bo_mem)
 	}
 	agp_flush_cache();
 	sc->sc_methods->flush_tlb(sc->sc_chipc);
-	agp_be->bound = sc->sc_apaddr + (node->start << PAGE_SHIFT);
-	KASSERT(agp_be->bound);
+	agp_be->addr = sc->sc_apaddr + (node->start << PAGE_SHIFT);
+	agp_be->bound = 1;
 
 	return 0;
 }
@@ -84,7 +85,7 @@ ttm_agp_unbind(struct ttm_tt *ttm)
 	unsigned i;
 
 	if (agp_be->bound) {
-		addr = agp_be->bound;
+		addr = agp_be->addr;
 		for (i = 0; i < ttm->num_pages; i++) {
 			sc->sc_methods->unbind_page(sc->sc_chipc, addr);
 			addr += PAGE_SIZE;
