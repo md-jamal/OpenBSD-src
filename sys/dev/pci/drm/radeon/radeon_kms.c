@@ -40,10 +40,6 @@
 extern int vga_console_attached;
 #endif
 
-#ifdef __macppc__
-#include "vgafb_pci.h"
-#endif
-
 #define DRIVER_NAME		"radeon"
 #define DRIVER_DESC		"ATI Radeon"
 #define DRIVER_DATE		"20080613"
@@ -1558,7 +1554,7 @@ radeondrm_attach_kms(struct device *parent, struct device *self, void *aux)
 	pcireg_t		 type;
 	uint8_t			 iobar;
 
-#ifdef __sparc64__
+#if defined(__sparc64__) || defined(__macppc__)
 	extern int fbnode;
 #endif
 
@@ -1571,12 +1567,8 @@ radeondrm_attach_kms(struct device *parent, struct device *self, void *aux)
 	rdev->memt = pa->pa_memt;
 	rdev->dmat = pa->pa_dmat;
 
-#ifdef __sparc64__
+#if defined(__sparc64__) || defined(__macppc__)
 	if (fbnode == PCITAG_NODE(rdev->pa_tag))
-		rdev->console = 1;
-#elif NVGAFB_PCI > 0
-	extern pcitag_t vgafb_pci_console_tag;
-	if (!bcmp(&rdev->pa_tag, &vgafb_pci_console_tag, sizeof(rdev->pa_tag)))
 		rdev->console = 1;
 #else
 	if (PCI_CLASS(pa->pa_class) == PCI_CLASS_DISPLAY &&

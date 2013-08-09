@@ -298,6 +298,14 @@ vgafb_mmap(void *v, off_t off, int prot)
 }
 
 int
+vgafb_is_console(int node)
+{
+	extern int fbnode;
+
+	return (fbnode == node);
+}
+
+int
 vgafb_cnattach(bus_space_tag_t iot, bus_space_tag_t memt, int type, int check)
 {
 	struct vga_config *vc = &vgafbcn;

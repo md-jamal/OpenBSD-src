@@ -53,6 +53,7 @@ struct vga_config {
 };
 
 int	vgafb_cnattach(bus_space_tag_t, bus_space_tag_t, int, int);
+int	vgafb_is_console(int);
 
 void	vgafb_init(bus_space_tag_t, bus_space_tag_t,
 	    struct vga_config *, u_int32_t, size_t);

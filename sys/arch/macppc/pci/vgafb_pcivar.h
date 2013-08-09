@@ -28,7 +28,5 @@
  * rights to redistribute these changes.
  */
 
-extern pcitag_t vgafb_pci_console_tag;
-
 /* XXX */
 int	vgafb_cnattach(bus_space_tag_t, bus_space_tag_t, int, int);
