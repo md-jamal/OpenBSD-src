@@ -1,3 +1,4 @@
+/*	$OpenBSD$	*/
 /* utility to create the register check tables
  * this includes inlined list.h safe for userspace.
  *

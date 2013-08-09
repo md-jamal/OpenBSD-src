@@ -1,3 +1,4 @@
+/*	$OpenBSD$	*/
 /*
  * Copyright 2009 VMware, Inc.
  *

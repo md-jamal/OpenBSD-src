@@ -1,3 +1,4 @@
+/*	$OpenBSD$	*/
 /*
  * Copyright 2011 Red Hat Inc.
  * All Rights Reserved.

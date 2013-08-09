@@ -1,4 +1,4 @@
-/* $OpenBSD: r300_reg.h,v 1.6 2011/06/02 18:22:00 weerd Exp $ */
+/*	$OpenBSD$	*/
 /*
  * Copyright 2005 Nicolai Haehnle et al.
  * Copyright 2008 Advanced Micro Devices, Inc.

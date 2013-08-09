@@ -1,3 +1,4 @@
+/*	$OpenBSD$	*/
 /*
  * Copyright 2011 Christian König.
  * All Rights Reserved.
